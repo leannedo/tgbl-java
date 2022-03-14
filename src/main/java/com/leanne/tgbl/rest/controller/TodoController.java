@@ -2,9 +2,8 @@ package com.leanne.tgbl.rest.controller;
 
 import com.leanne.tgbl.exceptions.ResourceNotFoundException;
 import com.leanne.tgbl.rest.domain.RestTodo;
-import com.leanne.tgbl.service.TodoServiceImpl;
+import com.leanne.tgbl.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -15,7 +14,7 @@ import java.util.List;
 @RestController
 public class TodoController {
     @Autowired
-    TodoServiceImpl toDoService;
+    TodoService todoService;
 
     @GetMapping("/")
     public String welcome() {
@@ -24,35 +23,31 @@ public class TodoController {
 
     @GetMapping("/todos")
     public List<RestTodo> getAllTodos() {
-        return toDoService.getAllTodos();
+        return todoService.getAllTodos();
     }
 
     @GetMapping("/todos/{id}")
     public RestTodo getTodoById(@PathVariable long id) {
-        return toDoService.getTodoById(id)
+        return todoService.getTodoById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("todo", id));
     }
 
     @PostMapping("/todos")
     public ResponseEntity<RestTodo> createTodo(@RequestBody RestTodo restTodo) {
-        final HttpHeaders responseHeaders = new HttpHeaders();
-        RestTodo createdTodo = toDoService.createTodo(restTodo);
-        responseHeaders.set("X-RestCollection-Url-key", Long.toString(createdTodo.id()));
+        RestTodo createdTodo = todoService.createTodo(restTodo);
 
-        return new ResponseEntity<>(createdTodo, responseHeaders, CREATED);
+        return new ResponseEntity<>(createdTodo, CREATED);
     }
 
     @PutMapping("/todos/{id}")
     public ResponseEntity<RestTodo> updateTodo(@PathVariable long id, @RequestBody RestTodo restTodo) {
-        final HttpHeaders responseHeaders = new HttpHeaders();
-        RestTodo updatedTodo = toDoService.updateTodo(id, restTodo);
-        responseHeaders.set("X-RestCollection-Url-key", Long.toString(updatedTodo.id()));
+        RestTodo updatedTodo = todoService.updateTodo(id, restTodo);
 
-        return new ResponseEntity<>(updatedTodo, responseHeaders, ACCEPTED);
+        return new ResponseEntity<>(updatedTodo, ACCEPTED);
     }
 
     @DeleteMapping("todos/{id}")
     public void deleteTodo(@PathVariable long id) {
-        toDoService.deleteTodo(id);
+        todoService.deleteTodo(id);
     }
 }
