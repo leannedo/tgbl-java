@@ -7,8 +7,8 @@ Prerequisite:
 - Java 16
 - Create a local DB env file as `database.env`, with the following config:
 ```
-POSTGRES_USER=<username>
-POSTGRES_PASSWORD=<password>
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
 POSTGRES_DB=tgbl
 ```
 
@@ -22,7 +22,10 @@ docker-compose up -d
 
 - Then start the server with:
 ````
-POSTGRES_USER=<username> POSTGRES_PASSWORD=<password> ./mvnw spring-boot:run
+export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/tgbl
+export SPRING_DATASOURCE_USERNAME=postgres
+export SPRING_DATASOURCE_PASSWORD=postgres
+./mvnw spring-boot:run
 ````
 
 - Visiting `localhost:8080` to verify if the application has been running successfully:

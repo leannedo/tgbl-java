@@ -1,0 +1,115 @@
+openapi: 3.0.0
+info:
+  title: The Great Bucket List
+  description: API for The Great Bucket List.
+  version: 0.1.9
+paths:
+  /todos:
+    get:
+      summary: Returns a list of todos.
+      responses:
+        '200':
+          description: A JSON array of todos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+
+    post:
+      summary: Create new todo
+      requestBody:
+        description: New todo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+      responses:
+        '201':
+          description: Created todo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+
+  /todos/{id}:
+    get:
+      summary: Returns todo by Id
+      parameters:
+        - name: id
+          in: path
+          description: Todo ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Todo by Id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+    put:
+      summary: Update todo by Id
+      parameters:
+        - name: id
+          in: path
+          description: Todo ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: New todo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+      responses:
+        '200':
+          description: Todo by Id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+    delete:
+      summary: Delete todo by Id
+      parameters:
+        - name: id
+          in: path
+          description: Todo ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Todo deleted by Id
+
+
+
+components:
+  schemas:
+    Todo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          readOnly: true
+        name:
+          type: string
+          example: "Task 1"
+        completed:
+          type: boolean
+          example: false
+      required:
+        - id
+        - name
+        - completed
+

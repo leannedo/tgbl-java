@@ -4,6 +4,7 @@ import com.leanne.tgbl.rest.domain.RestTodo;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-@Table(name = "tgbl")
+@Table(name = "todos")
 public class RepoTodo {
     @Id
     @GeneratedValue
@@ -25,6 +26,12 @@ public class RepoTodo {
 
     @Column(name = "completed")
     public boolean completed;
+
+    @Column(name = "created_at")
+    public LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    public LocalDateTime updatedAt;
 
     public static RestTodo toRestTodo(RepoTodo repoTodo) {
         return new RestTodo(repoTodo.getId(), repoTodo.getName(), repoTodo.isCompleted());
