@@ -37,5 +37,6 @@ Welcome to the great bucket list!
 - Java 17
 - Spring Boot
 - PostgreSQL
+- Flyway (for DB migration)
 
 
